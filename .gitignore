@@ -36,6 +36,7 @@ wordpress/wp-content/themes/base-theme/build
 
 build
 node_modules
+vendor
 bundle-analysis
 
 # MAMP
