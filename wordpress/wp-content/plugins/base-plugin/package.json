@@ -1,0 +1,18 @@
+{
+	"name": "base-plugin",
+	"description": "A starter plugin for a monorepo WordPress project",
+	"version": "0.0.1",
+	"author": "Troy Chaplin",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"start": "concurrently \"pnpm run start:blocks\" \"pnpm run start:scripts\"",
+		"start:blocks": "wp-scripts start --experimental-modules --webpack-copy-php",
+		"start:scripts": "webpack --config webpack.scripts.js --watch",
+		"build": "rm -rf build && pnpm run build:blocks && pnpm run build:interactive && pnpm run build-blocks-manifest",
+		"build:blocks": "wp-scripts build --webpack-copy-php --config webpack.scripts.js",
+		"build:interactive": "wp-scripts build --experimental-modules --webpack-copy-php",
+		"build-blocks-manifest": "wp-scripts build-blocks-manifest --output=src/blocks-manifest.php",
+		"clean": "rm -rf .turbo node_modules build"
+	}
+}

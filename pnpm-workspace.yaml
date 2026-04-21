@@ -1,0 +1,3 @@
+packages:
+  - 'wordpress/wp-content/plugins/base-plugin'
+  - 'wordpress/wp-content/themes/base-theme'

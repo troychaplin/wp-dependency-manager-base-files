@@ -1,0 +1,21 @@
+{
+	"name": "base-theme",
+	"version": "0.0.1",
+	"description": "A starter theme for a monorepo WordPress project",
+	"main": "index.js",
+	"author": "Troy Chaplin",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "rm -rf build && webpack --mode production",
+		"start": "webpack --mode=development --watch",
+		"clean": "rm -rf .turbo node_modules build"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.26.0",
+		"css-loader": "^7.1.2",
+		"mini-css-extract-plugin": "^2.9.2",
+		"postcss": "^8.4.49",
+		"sass-loader": "^16.0.5",
+		"webpack-remove-empty-scripts": "^1.1.1"
+	}
+}
