@@ -2,6 +2,8 @@
 
 .htaccess
 index.php
+composer.lock
+pnpm-lock.yaml
 
 # Ignore entire wordpress directory
 wordpress/*
