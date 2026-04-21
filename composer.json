@@ -9,9 +9,9 @@
 		}
 	},
 	"scripts": {
-		"lint-plugin-php": "./vendor/bin/phpcs --standard=phpcs.xml.dist ./wordpress/wp-content/plugins/monorepo-plugin",
-		"format-plugin-php": "./vendor/bin/phpcbf --standard=phpcs.xml.dist -v --report-summary --report-source ./wordpress/wp-content/plugins/monorepo-plugin || true",
-		"lint-theme-php": "./vendor/bin/phpcs --standard=phpcs.xml.dist ./wordpress/wp-content/themes/monorepo-theme",
-		"format-theme-php": "./vendor/bin/phpcbf --standard=phpcs.xml.dist -v --report-summary --report-source ./wordpress/wp-content/themes/monorepo-theme || true"
+		"lint-plugin-php": "./vendor/bin/phpcs --standard=phpcs.xml.dist ./wordpress/wp-content/plugins/base-plugin",
+		"format-plugin-php": "./vendor/bin/phpcbf --standard=phpcs.xml.dist -v --report-summary --report-source ./wordpress/wp-content/plugins/base-plugin || true",
+		"lint-theme-php": "./vendor/bin/phpcs --standard=phpcs.xml.dist ./wordpress/wp-content/themes/base-theme",
+		"format-theme-php": "./vendor/bin/phpcbf --standard=phpcs.xml.dist -v --report-summary --report-source ./wordpress/wp-content/themes/base-theme || true"
 	}
 }

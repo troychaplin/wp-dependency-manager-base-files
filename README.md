@@ -1,130 +1,93 @@
-# WordPress Monorepo Manager
+# WordPress Monorepo Base
 
-A modern WordPress development setup using a monorepo architecture with Turbo for build orchestration and npm workspaces for package management. This project provides a structured approach to developing custom WordPress themes and plugins with modern tooling and best practices.
+A reusable base setup for WordPress projects using a monorepo architecture with [Turbo](https://turbo.build/) for build orchestration and [pnpm](https://pnpm.io/) workspaces for package management. Includes a starter theme and a block plugin with ESLint, Stylelint, PHPCS, and Webpack pre-configured.
 
 ## Prerequisites
 
-- Node.js >= 20
-- npm >= 10.0.0
-- WordPress >= 6.4
-- Composer (for theme dependencies)
-
-## Code Standards
-
-This project follows WordPress Coding Standards using:
-
-- ESLint with `@wordpress/eslint-plugin`
-- Stylelint with `@wordpress/stylelint-config`
-- PHP with `wp-coding-standards/wpcs`
+- Node.js (version pinned in `.nvmrc`)
+- pnpm (version pinned in `package.json` `packageManager` field)
+- Composer (for PHP linting and theme/plugin PHP dependencies)
+- WordPress >= 6.6
 
 ## Project Structure
 
-    wordpress/                      # WordPress installation (ignored except for custom code)
-    ├── wp-content/
-    │   ├── plugins/
-    │   │   └── monorepo-plugin/    # Custom blocks plugin
-    │   └── themes/
-    │       └── monorepo-theme/     # Custom theme
-    ├── .gitignore                  # Git ignore rules
-    ├── .eslintrc.json              # ESLint configuration
-    ├── .prettierrc.json            # Prettier configuration
-    ├── .stylelintrc.json           # Stylelint configuration
-    ├── package.json                # Root package configuration
-    ├── phpcs.xml.dist              # PHP CodeSniffer configuration
-    ├── turbo.json                  # Turbo pipeline configuration
-    └── README.md                   # This file
+```
+.
+├── .github/workflows/         # GitHub Actions CI
+├── .husky/                    # Git hooks (pre-commit → lint-staged)
+├── wordpress/
+│   └── wp-content/
+│       ├── plugins/
+│       │   └── base-plugin/   # Starter block plugin
+│       └── themes/
+│           └── base-theme/    # Starter theme
+├── .eslintrc.json
+├── .prettierrc
+├── .stylelintrc.json
+├── composer.json
+├── package.json               # Root workspace config
+├── phpcs.xml.dist
+├── pnpm-workspace.yaml
+└── turbo.json
+```
 
 ## Getting Started
 
-1. **Clone the repository**
+1. Clone the repository and place a WordPress install in `wordpress/`.
+2. Install dependencies:
+   ```bash
+   pnpm install
+   composer install
+   ```
+3. Start development mode:
+   ```bash
+   pnpm run start        # Watch both plugin and theme
+   pnpm run start:plugin # Plugin only
+   pnpm run start:theme  # Theme only
+   ```
 
-    ```bash
-    git clone <your-repo-url>
-    cd wp-monorepo-manager
-    ```
+## Scripts
 
-2. **Install dependencies**
+### Build
 
-    ```bash
-    npm install
-    ```
+| Script                  | Description                |
+| ----------------------- | -------------------------- |
+| `pnpm run build`        | Build both plugin and theme |
+| `pnpm run build:plugin` | Build plugin only          |
+| `pnpm run build:theme`  | Build theme only           |
 
-3. **Set up WordPress**
+### Lint & Format
 
-    - Place your WordPress installation in the `wordpress/` directory
-    - The theme and plugin directories are already configured and tracked in Git
+| Script                 | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `pnpm run lint`        | Run all linters (JS, CSS, PHP)             |
+| `pnpm run lint:plugin` | Lint plugin (JS, CSS, PHP)                 |
+| `pnpm run lint:theme`  | Lint theme (JS, CSS, PHP)                  |
+| `pnpm run format`      | Auto-fix all formatters (JS, CSS, PHP)     |
 
-4. **Development**
-    ```bash
-    npm run start    # Start development mode with file watching
-    ```
-
-## Common Commands
-
-### Building
-
-```
-npm run build          # Build all workspaces
-npm run build:dev      # Build with development settings
-npm run build:prod     # Build with production settings
-npm run build:theme    # Build theme only
-npm run build:plugin   # Build plugin only
-```
+Granular targets exist per language (e.g. `lint:plugin-js`, `format:theme-css`).
 
 ### Maintenance
 
-```
-npm run clean          # Clean all workspaces
-npm run format         # Format all code
-npm run lint           # Run all linters
-npm run size           # Check bundle sizes
-```
+| Script                  | Description                                        |
+| ----------------------- | -------------------------------------------------- |
+| `pnpm run clean`        | Remove build artifacts and node_modules            |
+| `pnpm run clean:fresh`  | Full reset (removes lockfile, reinstalls, rebuilds) |
 
-## Contributing
+### Bundle Analysis
 
-Commits must follow the conventional commit format:
+Set `ANALYZE=1` to emit a webpack bundle report into `./bundle-analysis/`:
 
-```
-type: commit note
-```
-
-### Available Types
-
-- `add:` New features
-- `change:` Changes to existing functionality
-- `deprecate:` Soon-to-be removed features
-- `doc:` Documentation only changes
-- `fix:` Bug fixes
-- `finish:` Finishing touches
-- `refactor:` Code restructuring
-- `release:` Version changes
-- `revert:` Revert previous commits
-- `test:` Adding/updating tests
-- `upgrade:` Dependencies updates
-
-## Troubleshooting
-
-If you encounter build issues:
-
-```
-# Clean everything and reinstall
-npm run clean
-rm -rf .turbo
-npm install
+```bash
+ANALYZE=1 pnpm run build:plugin
+ANALYZE=1 pnpm run build:theme
 ```
 
-For theme template issues:
+## Code Standards
 
-```
-cd wordpress/wp-content/themes/monorepo-theme
-composer install
-```
+- JavaScript — ESLint with `@wordpress/eslint-plugin`
+- CSS/SCSS — Stylelint with `@wordpress/stylelint-config/scss`
+- PHP — `wp-coding-standards/wpcs` via PHPCS
+- Formatting — Prettier (tabs, single quotes, 100-char width)
 
-## Key Features
-
-- **Monorepo Architecture** - Manage theme and plugin in a single repository
-- **Modern Build Tools** - Uses Turbo for fast, cached builds
-- **WordPress Standards** - Follows WordPress coding standards with automated linting
-- **Hot Reloading** - Development mode with automatic rebuilds
-- **Size Monitoring** - Bundle size limits to keep assets optimized
-- **Git Integration** - Smart `.gitignore` that tracks only your custom code
+Pre-commit hook runs `lint-staged` on changed files across all three languages.

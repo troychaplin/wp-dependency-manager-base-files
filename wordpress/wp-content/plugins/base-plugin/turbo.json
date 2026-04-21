@@ -1,0 +1,24 @@
+{
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"inputs": [
+				"src/**",
+				"webpack.scripts.js",
+				"package.json",
+				"Functions/**/*.php",
+				"plugin.php"
+			],
+			"outputs": ["build/**", "src/blocks-manifest.php"]
+		},
+		"start": {
+			"env": ["NODE_ENV"]
+		},
+		"start:blocks": {
+			"env": ["NODE_ENV"]
+		},
+		"start:scripts": {
+			"env": ["NODE_ENV"]
+		}
+	}
+}
